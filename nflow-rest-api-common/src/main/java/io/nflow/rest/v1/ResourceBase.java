@@ -136,7 +136,7 @@ public abstract class ResourceBase {
   public Stream<ListWorkflowInstanceResponse> listWorkflowInstances(final List<Long> ids, final List<String> types,
       final Long parentWorkflowId, final Long parentActionId, final List<String> states,
       final List<WorkflowInstanceStatus> statuses, final String businessKey, final String externalId, final String include,
-      final Long maxResults, final Long maxActions, final WorkflowInstanceService workflowInstances,
+      final Long maxResults, final Long maxActions, boolean queryArchive, final WorkflowInstanceService workflowInstances,
       final ListWorkflowInstanceConverter listWorkflowConverter) {
     Set<String> includeStrings = parseIncludeStrings(include).collect(toSet());
     QueryWorkflowInstances q = new QueryWorkflowInstances.Builder() //
@@ -153,6 +153,7 @@ public abstract class ResourceBase {
         .setIncludeActionStateVariables(includeStrings.contains(actionStateVariables)) //
         .setMaxResults(maxResults) //
         .setMaxActions(maxActions) //
+        .setQueryArchive(queryArchive) //
         .setIncludeChildWorkflows(includeStrings.contains(childWorkflows)).build();
     Stream<WorkflowInstance> instances = workflowInstances.listWorkflowInstancesAsStream(q);
     Set<WorkflowInstanceInclude> parseIncludeEnums = parseIncludeEnums(include);
@@ -168,11 +169,11 @@ public abstract class ResourceBase {
     return Stream.of(trimToEmpty(include).split(","));
   }
 
-  public ListWorkflowInstanceResponse fetchWorkflowInstance(final long id, final String include, final Long maxActions,
+  public ListWorkflowInstanceResponse fetchWorkflowInstance(final long id, final String include, final Long maxActions, boolean queryArchive,
       final WorkflowInstanceService workflowInstances,
       final ListWorkflowInstanceConverter listWorkflowConverter) throws EmptyResultDataAccessException {
     Set<WorkflowInstanceInclude> includes = parseIncludeEnums(include);
-    WorkflowInstance instance = workflowInstances.getWorkflowInstance(id, includes, maxActions);
+    WorkflowInstance instance = workflowInstances.getWorkflowInstance(id, includes, maxActions, queryArchive);
     return listWorkflowConverter.convert(instance, includes);
   }
 
