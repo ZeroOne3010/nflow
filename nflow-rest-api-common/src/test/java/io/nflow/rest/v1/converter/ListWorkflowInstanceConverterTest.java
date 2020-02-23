@@ -94,7 +94,7 @@ public class ListWorkflowInstanceConverterTest {
     assertThat(resp.started, is(i.started));
     assertThat(resp.retries, is(i.retries));
     assertThat(resp.signal, is(i.signal.get()));
-    assertThat(resp.archived, nullValue());
+    assertThat(resp.isArchived, nullValue());
     assertThat(resp.actions, contains(reflectEquals(
         new Action(a.id, a.type.name(), a.state, a.stateText, a.retryNo, a.executionStart, a.executionEnd, a.executorId))));
   }
@@ -144,7 +144,7 @@ public class ListWorkflowInstanceConverterTest {
     assertThat(resp.started, is(i.started));
     assertThat(resp.retries, is(i.retries));
     assertThat(resp.signal, is(nullValue()));
-    assertThat(resp.archived, is(true));
+    assertThat(resp.isArchived, is(true));
     assertThat(resp.actions, contains(reflectEquals(new Action(a.id, a.type.name(), a.state, a.stateText, a.retryNo,
         a.executionStart, a.executionEnd, a.executorId, expectedStateVariables))));
   }
