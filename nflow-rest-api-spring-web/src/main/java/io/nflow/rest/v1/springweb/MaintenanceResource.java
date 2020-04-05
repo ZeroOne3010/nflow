@@ -17,13 +17,16 @@ import io.nflow.engine.service.MaintenanceService;
 import io.nflow.rest.v1.converter.MaintenanceConverter;
 import io.nflow.rest.v1.msg.MaintenanceRequest;
 import io.nflow.rest.v1.msg.MaintenanceResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
 
 @RestController
 @RequestMapping(value = NFLOW_SPRING_WEB_PATH_PREFIX + NFLOW_MAINTENANCE_PATH, produces = APPLICATION_JSON_VALUE)
-@Api("nFlow maintenance")
+@OpenAPIDefinition(info = @Info(
+        title = "nFlow maintenance"
+))
 @Component
 public class MaintenanceResource {
 
@@ -34,9 +37,9 @@ public class MaintenanceResource {
   private MaintenanceConverter converter;
 
    @PostMapping(consumes = APPLICATION_JSON_VALUE)
-   @ApiOperation("Do maintenance on old workflow instances synchronously")
+   @Operation(description = "Do maintenance on old workflow instances synchronously")
    public MaintenanceResponse cleanupWorkflows(
-           @RequestBody @ApiParam(value = "Parameters for the maintenance process", required = true) MaintenanceRequest request) {
+           @RequestBody @Parameter(description = "Parameters for the maintenance process", required = true) MaintenanceRequest request) {
     MaintenanceConfiguration configuration = converter.convert(request);
     MaintenanceResults results = maintenanceService.cleanupWorkflows(configuration);
     return converter.convert(results);

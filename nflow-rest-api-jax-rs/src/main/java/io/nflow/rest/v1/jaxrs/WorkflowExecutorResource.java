@@ -18,13 +18,16 @@ import io.nflow.engine.service.WorkflowExecutorService;
 import io.nflow.rest.config.jaxrs.NflowCors;
 import io.nflow.rest.v1.converter.ListWorkflowExecutorConverter;
 import io.nflow.rest.v1.msg.ListWorkflowExecutorResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
 
 @Path(NFLOW_WORKFLOW_EXECUTOR_PATH)
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
-@Api("nFlow workflow executor management")
+@OpenAPIDefinition(info = @Info(
+        title = "nFlow workflow executor management"
+))
 @Component
 @NflowCors
 public class WorkflowExecutorResource {
@@ -39,7 +42,7 @@ public class WorkflowExecutorResource {
   }
 
   @GET
-  @ApiOperation(value = "List workflow executors", response = ListWorkflowExecutorResponse.class, responseContainer = "List")
+  @Operation(summary = "List workflow executors")
   public Collection<ListWorkflowExecutorResponse> listWorkflowExecutors() {
     return workflowExecutors.getWorkflowExecutors().stream().map(executor -> converter.convert(executor)).collect(toList());
   }

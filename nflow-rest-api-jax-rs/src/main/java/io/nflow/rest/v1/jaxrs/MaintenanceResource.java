@@ -18,14 +18,17 @@ import io.nflow.rest.config.jaxrs.NflowCors;
 import io.nflow.rest.v1.converter.MaintenanceConverter;
 import io.nflow.rest.v1.msg.MaintenanceRequest;
 import io.nflow.rest.v1.msg.MaintenanceResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @Path(NFLOW_MAINTENANCE_PATH)
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
-@Api("nFlow maintenance")
+@OpenAPIDefinition(info = @Info(
+        title = "nFlow maintenance"
+))
 @Component
 @NflowCors
 public class MaintenanceResource {
@@ -37,9 +40,9 @@ public class MaintenanceResource {
   private MaintenanceConverter converter;
 
   @POST
-  @ApiOperation("Do maintenance on old workflow instances synchronously")
+  @Operation(description = "Do maintenance on old workflow instances synchronously")
   public MaintenanceResponse cleanupWorkflows(
-      @ApiParam(value = "Parameters for the maintenance process", required = true) MaintenanceRequest request) {
+      @RequestBody(description = "Parameters for the maintenance process", required = true) MaintenanceRequest request) {
     MaintenanceConfiguration configuration = converter.convert(request);
     MaintenanceResults results = maintenanceService.cleanupWorkflows(configuration);
     return converter.convert(results);
