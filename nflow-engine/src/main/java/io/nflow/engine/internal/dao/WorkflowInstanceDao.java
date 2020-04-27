@@ -514,10 +514,10 @@ public class WorkflowInstanceDao {
 
   public WorkflowInstance getWorkflowInstance(long id, Set<WorkflowInstanceInclude> includes, Long maxActions, boolean queryArchive) {
     String sql = "select *, 0 as archived from " + MAIN.nameOf("workflow") + " where id = ?";
-    Object[] args = new Object[]{id};
+    Object[] args = new Object[]{ id };
     if (queryArchive) {
       sql += " union all select *, 1 as archived from " + ARCHIVE.nameOf("workflow") + " where id = ?";
-      args = new Object[]{id, id};
+      args = new Object[]{ id, id };
     }
     WorkflowInstance instance = jdbc.queryForObject(sql, args, new WorkflowInstanceRowMapper()).build();
     if (includes.contains(WorkflowInstanceInclude.CURRENT_STATE_VARIABLES)) {
@@ -682,16 +682,16 @@ public class WorkflowInstanceDao {
     }
     conditions.add("executor_group = :executor_group");
     params.addValue("executor_group", executorInfo.getExecutorGroup());
-    String sqlQuery = " where " + collectionToDelimitedString(conditions, " and ") + " order by id desc";
+    String whereCondition = " where " + collectionToDelimitedString(conditions, " and ") + " order by id desc";
 
     long maxResults = getMaxResults(query.maxResults);
-    String sql = sqlVariants.limit("select *, 0 as archived from " + MAIN.nameOf("workflow") + sqlQuery, maxResults);
+    String sql = sqlVariants.limit("select *, 0 as archived from " + MAIN.nameOf("workflow") + whereCondition, maxResults);
     List<WorkflowInstance.Builder> results = namedJdbc.query(sql, params, new WorkflowInstanceRowMapper());
     maxResults -= results.size();
     Stream<WorkflowInstance.Builder> resultStream = results.stream();
 
     if (query.queryArchive && maxResults > 0) {
-      sql = sqlVariants.limit("select *, 1 as archived from " + ARCHIVE.nameOf("workflow") + sqlQuery, maxResults);
+      sql = sqlVariants.limit("select *, 1 as archived from " + ARCHIVE.nameOf("workflow") + whereCondition, maxResults);
       resultStream = concat(resultStream, namedJdbc.query(sql, params, new WorkflowInstanceRowMapper()).stream());
     }
 
