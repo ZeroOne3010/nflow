@@ -1,15 +1,15 @@
 ## 7.2.1-SNAPSHOT (future release)
 
 **Highlights**
-- Support for querying archived workflow instances
+- Support for querying archived workflow instances.
 
 **Details**
 - `nflow-engine`
-  - Query interfaces allow to request also scanning of archived workflow instances
+  - Query interfaces allow to request searching of archived workflow instances.
 - `nflow-rest-api-jax-rs` and `nflow-rest-api-spring-web`
-  - Support for querying also archived workflow instances when passing `queryArchive=true` query parameter.
+  - Support for querying archived workflow instances when passing `queryArchive=true` query parameter.
 - `nflow-explorer`
-  - Query also archived workflow instances by default. Configurable in `config.js`.
+  - Query and show archived workflow instances by default. Configurable in `config.js`.
 
 ## 7.2.0 (2020-04-27)
 
