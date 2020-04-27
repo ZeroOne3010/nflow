@@ -68,10 +68,12 @@ public abstract class ResourceBase {
           new SimpleEntry<>(actionStateVariables, WorkflowInstanceInclude.ACTION_STATE_VARIABLES),
           new SimpleEntry<>(childWorkflows, WorkflowInstanceInclude.CHILD_WORKFLOW_IDS))
       .collect(toMap(Entry::getKey, Entry::getValue)));
+  protected static final String QUERY_ARCHIVED_DEFAULT_S = "false";
+  protected static final boolean QUERY_ARCHIVED_DEFAULT = Boolean.parseBoolean(QUERY_ARCHIVED_DEFAULT_S);
 
   public List<ListWorkflowDefinitionResponse> listWorkflowDefinitions(final List<String> types,
-      final WorkflowDefinitionService workflowDefinitions, final ListWorkflowDefinitionConverter converter,
-      final WorkflowDefinitionDao workflowDefinitionDao) {
+                                                                      final WorkflowDefinitionService workflowDefinitions, final ListWorkflowDefinitionConverter converter,
+                                                                      final WorkflowDefinitionDao workflowDefinitionDao) {
     List<AbstractWorkflowDefinition<? extends WorkflowState>> definitions = workflowDefinitions.getWorkflowDefinitions();
     Set<String> reqTypes = new HashSet<>(types);
     Set<String> foundTypes = new HashSet<>();

@@ -110,7 +110,7 @@ public class WorkflowInstanceResource extends SpringWebResource {
   public ResponseEntity<?> fetchWorkflowInstance(@ApiParam("Internal id for workflow instance") @PathVariable("id") long id,
       @RequestParam(value = "include", required = false) @ApiParam(value = INCLUDE_PARAM_DESC, allowableValues = INCLUDE_PARAM_VALUES, allowMultiple = true) String include,
       @RequestParam(value = "maxActions", required = false) @ApiParam("Maximum number of actions returned for each workflow instance") Long maxActions,
-      @RequestParam(value = "queryArchive", required = false, defaultValue = "false") @ApiParam("Query also the archive if not found from main tables") boolean queryArchive) {
+      @RequestParam(value = "queryArchive", required = false, defaultValue = QUERY_ARCHIVED_DEFAULT_S) @ApiParam("Query also the archive if not found from main tables") boolean queryArchive) {
     return handleExceptions(
         () -> ok(super.fetchWorkflowInstance(id, include, maxActions, queryArchive, this.workflowInstances, this.listWorkflowConverter)));
   }
@@ -129,7 +129,7 @@ public class WorkflowInstanceResource extends SpringWebResource {
       @RequestParam(value = "include", required = false) @ApiParam(value = INCLUDE_PARAM_DESC, allowableValues = INCLUDE_PARAM_VALUES, allowMultiple = true) String include,
       @RequestParam(value = "maxResults", required = false) @ApiParam("Maximum number of workflow instances to be returned") Long maxResults,
       @RequestParam(value = "maxActions", required = false) @ApiParam("Maximum number of actions returned for each workflow instance") Long maxActions,
-      @RequestParam(value = "queryArchive", required = false, defaultValue = "false") @ApiParam("Query also the archive if not enough results found from main tables") boolean queryArchive) {
+      @RequestParam(value = "queryArchive", required = false, defaultValue = QUERY_ARCHIVED_DEFAULT_S) @ApiParam("Query also the archive if not enough results found from main tables") boolean queryArchive) {
     return handleExceptions(
         () -> ok(super.listWorkflowInstances(ids, types, parentWorkflowId, parentActionId, states, statuses, businessKey,
             externalId, include, maxResults, maxActions, queryArchive, this.workflowInstances, this.listWorkflowConverter).iterator()));
